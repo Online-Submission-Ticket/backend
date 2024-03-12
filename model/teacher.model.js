@@ -1,11 +1,16 @@
 import mongoose from "mongoose";
 
-const TeacherSchema = new mongoose.Schema(
+const teacherSchema = new mongoose.Schema(
     {
+        teacherID: { 
+            type: String, 
+            unique: true ,
+            required: true
+        },
+
         name: {
             type: String,
             required: true,
-            trim: true,
         },
 
         email:{
@@ -14,17 +19,11 @@ const TeacherSchema = new mongoose.Schema(
             unique: true,
         },
 
-        password:{
-            type: String,
-            required: true,
-        },
-
-        phone: {
-            type: String,
-            required: true,
-        },
+        subjects: [{ class: String, subject: String }],
+        labs: [{ class: String, subject: String, batch: String }],
+        CC: { type: String, default: null },
     },
     {timestamps: true}
 );
 
-export default mongoose.model("teachers", TeacherSchema);
+export default mongoose.model("Teacher", teacherSchema);
