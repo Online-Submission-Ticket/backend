@@ -13,7 +13,7 @@ const teacherSchema = new mongoose.Schema(
             required: true,
         },
 
-        email:{
+        emailID:{
             type: String,
             required: true,
             unique: true,

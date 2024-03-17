@@ -16,20 +16,6 @@ dotenv.config();
 //database config
 connectDB();
 
-const storage = multer.memoryStorage(); // Store the file in memory as a buffer
-const upload = multer({
-  storage: storage, 
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype !== 'text/csv') {
-        return cb(new Error('Only CSV files are allowed'));
-    }
-    cb(null, true);
-  },
-});
-
-app.use(upload.single('Teacherfile')); // 'Teacherfile' should match the field name used in Postman
-
-
 //configuring middleware
 app.use(
     bodyParser.urlencoded({
