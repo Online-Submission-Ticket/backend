@@ -8,7 +8,6 @@ import teacherRoutes from "./routes/teacherRoutes.js";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import bodyParser from "body-parser";
-import multer from 'multer';
 
 //rest object
 const app = express();
@@ -19,7 +18,7 @@ dotenv.config();
 //database config
 connectDB();
 
-//configuring middleware
+//configure middleware
 app.use(
     bodyParser.urlencoded({
       extended: true,
