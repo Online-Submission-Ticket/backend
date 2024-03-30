@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import csvRoutes from "./routes/csvRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 
 import connectDB from "./config/db.js";
 import cors from "cors";
@@ -33,7 +34,9 @@ const port = process.env.PORT || 8080; //use port 8080 for development
 //routes
 app.use("/api/auth", authRoutes)
 app.use("/api/teachers", csvRoutes);
+app.use("/api/students" , csvRoutes);
 app.use("/api/getTeacher", teacherRoutes);
+app.use("/api/getStudent" , studentRoutes);
 
 app.listen(port, () => {
   console.log(`Server Runnnig on ${process.env.DEV_MODE} mode on ${port}`);
