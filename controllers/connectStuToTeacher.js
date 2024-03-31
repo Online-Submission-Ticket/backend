@@ -56,7 +56,7 @@ export const connectStuToLabTeacherController = async (req, res) => {
 };
 
 
-//for cc and theory subjects
+//for theory subjects
 export const connectStuToTheoryController = async (req, res) => {
     try {
         const { teacherId, class: Class } = req.params;
@@ -96,6 +96,59 @@ export const connectStuToTheoryController = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: `Students found for the ${Class} class`,
+            data: {
+                formattedStudents,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error connecting students to teacher',
+            error: error.message,
+        });
+    }
+};
+
+
+//for cc
+export const connectStuToCCController = async (req, res) => {
+    try {
+        const { teacherId } = req.params;
+
+        // Find the teacher based on the teacher ID
+        const teacher = await Teacher.findOne({ teacherID: teacherId });
+        if (!teacher) {
+            return res.status(404).json({
+                success: false,
+                message: 'Teacher not found',
+            });
+        }
+
+        // Check if the CC class is assigned
+        if (!teacher.CC) {
+            return res.status(404).json({
+                success: false,
+                message: 'No class assigned as CC',
+            });
+        }
+
+        // Retrieve students from the CC class
+        const students = await Student.find({ class: teacher.CC });
+
+        // Format student data
+        const formattedStudents = students.map(student => ({
+            rollNo: student.rollNo,
+            name: student.name,
+            attendance: student.attendance,
+            UT1Marks: student.UT1Marks,
+            UT2Marks: student.UT2Marks,
+            emailID: student.emailID,
+        }));
+
+        return res.status(200).json({
+            success: true,
+            message: `Students found for the CC class of teacher ${teacherId}`,
             data: {
                 formattedStudents,
             },
