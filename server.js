@@ -38,7 +38,7 @@ app.use("/api/teachers", csvRoutes);
 app.use("/api/students" , csvRoutes);
 app.use("/api/getTeacher", teacherRoutes);
 app.use("/api/getStudent" , studentRoutes);
-app.use('/api/connectStuToLabTeacher', connectStuRoutes);
+app.use('/api/connectStu', connectStuRoutes);
 
 app.listen(port, () => {
   console.log(`Server Runnnig on ${process.env.DEV_MODE} mode on ${port}`);

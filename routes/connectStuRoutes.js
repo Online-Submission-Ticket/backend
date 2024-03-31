@@ -1,8 +1,9 @@
 import express from 'express';
-import { connectStuToLabTeacherController } from '../controllers/connectStuToTeacher.js';
+import { connectStuToLabTeacherController, connectStuToTheoryController } from '../controllers/connectStuToTeacher.js';
 
 const router = express.Router();
 
-router.get('/:teacherId/:batch', connectStuToLabTeacherController);
+router.get('/lab/:teacherId/:batch', connectStuToLabTeacherController);
+router.get('/theory/:teacherId/:class', connectStuToTheoryController);
 
 export default router;
