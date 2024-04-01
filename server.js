@@ -33,7 +33,9 @@ const port = process.env.PORT || 8080; //use port 8080 for development
 //routes
 app.use("/api/auth", authRoutes)
 app.use("/api/teachers", csvRoutes);
+app.use("/api/upload/students" , csvRoutes);
 app.use("/api/getTeacher", teacherRoutes);
+app.use("/api/student" , studentRoutes);
 
 app.listen(port, () => {
   console.log(`Server Runnnig on ${process.env.DEV_MODE} mode on ${port}`);
