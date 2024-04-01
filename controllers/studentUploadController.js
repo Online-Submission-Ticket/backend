@@ -22,20 +22,30 @@ export const uploadStudentsController = async (req, res) => {
         stream
             .pipe(csv())
             .on('data', (data) => {
-                // console.log('Read:', data[0]);
+                console.log('Raw CSV data:', data);
 
-                const newStudentData = {
-                    rollNo: data['rollNo'],
-                    name: data['name'],
-                    attendance: parseInt(data['attendance']),
-                    UT1Marks: parseInt(data['UT1Marks']),
-                    UT2Marks: parseInt(data['UT2Marks']),
-                    emailID: data['emailID'],
-                    batch: data['batch'],
-                    class: data['class'],
-                };
+                try {
+                    const subjects = JSON.parse(data['subjects']);
+                    const labs = JSON.parse(data['labs']);
 
-                results.push(newStudentData);
+                    console.log('Parsed subjects:', subjects);
+                    console.log('Parsed labs:', labs);
+
+                    const newStudentData = {
+                        rollNo: data['rollNo'],
+                        name: data['name'],
+                        attendance: parseFloat(data['attendance']),
+                        emailID: data['emailID'],
+                        batch: data['batch'],
+                        class: data['class'],
+                        subjects,
+                        labs
+                    };
+
+                    results.push(newStudentData);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
             })
             .on('end', async () => {
                 console.log('CSV reading completed. Contents:', results);

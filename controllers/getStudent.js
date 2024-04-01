@@ -13,21 +13,10 @@ export const getStudentByRollNoController = async (req, res) => {
             });
         }
 
-        const response = {
-            rollNo: student.rollNo,
-            name: student.name,
-            emailID: student.emailID,
-            attendance: student.attendance,
-            UT1Marks: student.UT1Marks,
-            UT2Marks: student.UT2Marks,
-            batch: student.batch,
-            class: student.class,
-        };
-
         res.status(200).json({
             success: true,
             message: 'Student details retrieved successfully',
-            data: response,
+            data: student,
         });
     } catch (error) {
         console.error(error);
