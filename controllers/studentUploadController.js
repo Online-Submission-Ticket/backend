@@ -27,7 +27,6 @@ export const uploadStudentsController = async (req, res) => {
                 try {
                     const subjects = JSON.parse(data['subjects']);
                     const labs = JSON.parse(data['labs']);
-
                     console.log('Parsed subjects:', subjects);
                     console.log('Parsed labs:', labs);
 
@@ -38,6 +37,7 @@ export const uploadStudentsController = async (req, res) => {
                         emailID: data['emailID'],
                         batch: data['batch'],
                         class: data['class'],
+                        attendance: data['attendance'],
                         subjects,
                         labs
                     };

@@ -65,6 +65,11 @@ const studentSchema = new mongoose.Schema(
             type: String, 
             required: true 
         },
+        attendance:{
+            type : Number,
+            default : 0,
+            required: true
+        },
         class: { 
             type: String, 
             required: true 
@@ -72,7 +77,8 @@ const studentSchema = new mongoose.Schema(
         submissionStatus: { 
             type: Boolean, 
             default: false 
-        }
+        },
+       
     },
     { timestamps: true }
 );
