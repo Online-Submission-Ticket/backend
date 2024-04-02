@@ -27,15 +27,26 @@ export const connectStuToLabTeacherController = async (req, res) => {
 
         // If a matching lab batch is found, retrieve all students from that batch
         const students = await Student.find({ batch });
+        if (!students) {
+            return res.status(404).json({
+                success: false,
+                message: `Student not found for the ${batch} batch`,
+            });
+        }
+
 
         //data of stu which we want to show
         const formattedStudents = students.map(student => ({
             rollNo: student.rollNo,
             name: student.name,
-            attendance: student.attendance,
-            UT1Marks: student.UT1Marks,
-            UT2Marks: student.UT2Marks,
+            class: student.class,
+            batch: student.batch,
             emailID: student.emailID,
+            attendance: student.attendance,
+            labs: student.labs.filter(studentLab => {
+                // Check if the labName from student's data exists in the teacher's lab data
+                return teacher.labs.some(teacherLab => teacherLab.subject === studentLab.labName);
+            }),
         }));
 
         return res.status(200).json({
@@ -84,14 +95,23 @@ export const connectStuToTheoryController = async (req, res) => {
         const students = await Student.find({ class: Class });
 
         //data of students which we want to show
-        const formattedStudents = students.map(student => ({
-            rollNo: student.rollNo,
-            name: student.name,
-            attendance: student.attendance,
-            UT1Marks: student.UT1Marks,
-            UT2Marks: student.UT2Marks,
-            emailID: student.emailID,
-        }));
+        const formattedStudents = students.map(student => {
+            const relevantSubjects = student.subjects.filter(subject => {
+                return teacher.subjects.some(teacherSubject => {
+                    return teacherSubject.subject === subject.subjectName && teacherSubject.class === Class;
+                });
+            });
+
+            return {
+                rollNo: student.rollNo,
+                name: student.name,
+                class: student.class,
+                batch: student.batch,
+                attendance: student.attendance,
+                emailID: student.emailID,
+                subjects: relevantSubjects,
+            };
+        });
 
         return res.status(200).json({
             success: true,
@@ -140,10 +160,13 @@ export const connectStuToCCController = async (req, res) => {
         const formattedStudents = students.map(student => ({
             rollNo: student.rollNo,
             name: student.name,
-            attendance: student.attendance,
-            UT1Marks: student.UT1Marks,
-            UT2Marks: student.UT2Marks,
+            subjects: student.subjects,
+            labs: student.labs,
             emailID: student.emailID,
+            batch: student.batch,
+            attendance: student.attendance,
+            class: student.class,
+            submissionStatus: student.submissionStatus,
         }));
 
         return res.status(200).json({
