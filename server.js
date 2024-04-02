@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import csvRoutes from "./routes/csvRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 
 import connectDB from "./config/db.js";
 import cors from "cors";
