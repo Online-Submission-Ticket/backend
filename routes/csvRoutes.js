@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { uploadTeachersController } from '../controllers/teacherUploadController.js';
+import { uploadStudentsController } from '../controllers/studentUploadController.js';
 
 const router = express.Router();
 
@@ -20,5 +21,8 @@ const upload = multer({
 
 // Route handler for file upload
 router.post('/upload-teachers', upload.single('teacherFile'), uploadTeachersController);
+router.post('/upload-students', upload.single('studentFile'), uploadStudentsController);
+
+
 
 export default router;
