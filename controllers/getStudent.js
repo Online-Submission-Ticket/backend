@@ -12,11 +12,12 @@ export const getStudentByRollNoController = async (req, res) => {
                 message: 'Student not found',
             });
         }
+        const { createdAt, updatedAt, __v , ...relevantData } = student._doc;
 
         res.status(200).json({
             success: true,
             message: 'Student details retrieved successfully',
-            data: student,
+            data: relevantData,
         });
     } catch (error) {
         console.error(error);
