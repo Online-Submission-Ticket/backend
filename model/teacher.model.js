@@ -18,7 +18,14 @@ const teacherSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
-
+        password:{
+            type : String ,
+            default : null,
+        },
+        isPasswordSet:{
+            type : Boolean,
+            default : false,
+        },
         subjects: [{ class: String, subject: String }],
         labs: [{ class: String, subject: String, batch: String }],
         CC: { type: String, default: null },

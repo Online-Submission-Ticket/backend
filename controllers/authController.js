@@ -1,45 +1,50 @@
-import user from "../model/user.model.js";
+import Student from "../model/student.model.js";
+import Teacher from "../model/teacher.model.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
-import JWT from "jsonwebtoken";
 
 export const resetPasswordController = async (req, res) => {
     try {
-      const { email, newPassword } = req.body;
+      const { emailID, newPassword } = req.body;
       
       // Validation
-      if (!email || !newPassword) {
+      if (!emailID || !newPassword) {
         return res.status(400).send({
           success: false,
           message: "Email and new password are required",
         });
       }
   
+      // Check if the email is for a teacher
+      const isTeacherEmail = emailID.includes("@pict.edu");
+  
       // Check if user exists
-      const foundUser = await user.findOne({ email });
+      let foundUser;
+      if (isTeacherEmail) {
+        foundUser = await Teacher.findOne({ emailID });
+      } else {
+        foundUser = await Student.findOne({ emailID });
+      }
+
       if (!foundUser) {
         return res.status(200).send({
           success: false,
-          message: "Email is not registered",
+          message: "emailID is not registered",
         });
       }
   
       // Hash the new password
       const hashedPassword = await hashPassword(newPassword);
   
-      // Update the user's password
+      // Update the user's password and set isPasswordSet to true
       foundUser.password = hashedPassword;
+      foundUser.isPasswordSet = true;
       await foundUser.save();
   
-      // Generate token
-      const token = JWT.sign({ _id: foundUser._id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
   
       // Send response
       res.status(200).send({
         success: true,
         message: "Password reset successful",
-        token,
       });
     } catch (error) {
       console.log(error);
@@ -49,21 +54,31 @@ export const resetPasswordController = async (req, res) => {
         error,
       });
     }
-  };
+};
+
 export const loginController = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailID, password } = req.body;
     
     // Validation
-    if (!email || !password) {
+    if (!emailID || !password) {
       return res.status(400).send({
         success: false,
         message: "Invalid email or password",
       });
     }
 
+    // Check if the email is for a teacher
+    const isTeacherEmail = emailID.includes("@pict.edu");
+
     // Check if user exists
-    const foundUser = await user.findOne({ email });
+    let foundUser;
+    if (isTeacherEmail) {
+      foundUser = await Teacher.findOne({ emailID });
+    } else {
+      foundUser = await Student.findOne({ emailID });
+    }
+
     if (!foundUser) {
       return res.status(200).send({
         success: false,
@@ -80,16 +95,10 @@ export const loginController = async (req, res) => {
       });
     }
 
-    // Generate token
-    const token = JWT.sign({ _id: foundUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
     // Send response
     res.status(200).send({
       success: true,
       message: "Login successful",
-      token,
     });
   } catch (error) {
     console.log(error);
@@ -101,22 +110,28 @@ export const loginController = async (req, res) => {
   }
 };
 
-import User from "../model/user.model.js";
-
 export const checkEmailController = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { emailID } = req.body;
 
         // Check if email is provided
-        if (!email) {
+        if (!emailID) {
             return res.status(400).send({
                 success: false,
                 message: "Email is required",
             });
         }
 
-        // Check if email exists in the database
-        const existingUser = await User.findOne({ email });
+        // Check if the email is for a teacher
+        const isTeacherEmail = emailID.includes("@pict.edu");
+
+        // Check if email exists
+        let existingUser;
+        if (isTeacherEmail) {
+          existingUser = await Teacher.findOne({ emailID });
+        } else {
+          existingUser = await Student.findOne({ emailID });
+        }
 
         if (existingUser) {
             return res.status(200).send({
@@ -138,4 +153,3 @@ export const checkEmailController = async (req, res) => {
         });
     }
 };
-
