@@ -78,6 +78,14 @@ const studentSchema = new mongoose.Schema(
             type: Boolean, 
             default: false 
         },
+        password:{
+            type : String ,
+            default : null,
+        },
+        isPasswordSet:{
+            type : Boolean,
+            default : false,
+        },
        
     },
     { timestamps: true }

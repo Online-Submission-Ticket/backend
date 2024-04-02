@@ -9,7 +9,7 @@ import{
 
 //routing 
 //register  post method
-router.post("/reset/password", resetPasswordController);
+router.post("/set/password", resetPasswordController);
 
 //login method post
 router.post("/login", loginController);
