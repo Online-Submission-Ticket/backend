@@ -6,6 +6,7 @@ import csvRoutes from "./routes/csvRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import connectStuRoutes from "./routes/connectStuRoutes.js";
+import approveRoutes from "./routes/approveRoutes.js";
 
 import connectDB from "./config/db.js";
 import cors from "cors";
@@ -41,6 +42,7 @@ app.use("/api/getStudent" , studentRoutes);
 app.use('/api/connectStu', connectStuRoutes);
 app.use('/api/connectStuToCC', connectStuRoutes);
 app.use("/api/student" , studentRoutes);
+app.use("/api/approve", approveRoutes);
 
 app.listen(port, () => {
   console.log(`Server Runnnig on ${process.env.DEV_MODE} mode on ${port}`);
