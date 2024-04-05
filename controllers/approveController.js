@@ -139,3 +139,68 @@ export const approveTheoryController = async (req, res) => {
         });
     }
 };
+
+// for cc
+export const approveSubmissionController = async (req, res) => {
+    try {
+        const { teacherId, rollNo } = req.params;
+        console.log("Request Parameters:", teacherId, rollNo);
+        
+        // Check if any required parameter is null
+        if (!teacherId || !rollNo) {
+            return res.status(400).json({
+                success: false,
+                message: 'One or more required parameters are missing',
+            });
+        }
+
+        const teacher = await Teacher.findOne({ teacherID: teacherId, CC: { $exists: true } });
+        console.log("Teacher:", teacher);
+
+        // Check if the teacher is not found or not the Class Coordinator
+        if (!teacher) {
+            return res.status(404).json({
+                success: false,
+                message: 'Teacher not found or is not the Class Coordinator',
+            });
+        }
+
+        const student = await Student.findOne({ rollNo: rollNo });
+
+        // Check if the student is not found
+        if (!student) {
+            return res.status(404).json({
+                success: false,
+                message: 'Student not found',
+            });
+        }
+
+        // Check if the student belongs to the class of the teacher
+        if (student.class !== teacher.CC) {
+            return res.status(403).json({
+                success: false,
+                message: 'Student does not belong to the class of the teacher',
+            });
+        }
+
+        // Toggle the submission status of the student
+        student.submissionStatus = !student.submissionStatus;
+
+        await student.save();
+
+        return res.status(200).json({
+            success: true,
+            message: `Submission status toggled for student ${rollNo}`,
+            data: {
+                student,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error toggling submission status',
+            error: error.message,
+        });
+    }
+};
