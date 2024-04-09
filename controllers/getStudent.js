@@ -2,9 +2,9 @@ import Student from '../model/student.model.js';
 
 export const getStudentByRollNoController = async (req, res) => {
     try {
-        const { rollNo } = req.params; 
+        const { emailID } = req.params; 
 
-        const student = await Student.findOne({ rollNo });
+        const student = await Student.findOne({ emailID });
 
         if (!student) {
             return res.status(404).json({

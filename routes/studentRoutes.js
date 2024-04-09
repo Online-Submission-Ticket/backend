@@ -5,7 +5,7 @@ import { deleteAllStudentsController } from '../controllers/deleteStudents.js';
 const router = express.Router();
 
 
-router.get('/:rollNo', getStudentByRollNoController);
+router.get('/:emailID', getStudentByRollNoController);
 router.delete('/deleteAllStudents' , deleteAllStudentsController);
 
 export default router;
