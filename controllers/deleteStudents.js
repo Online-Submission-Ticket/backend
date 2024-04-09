@@ -1,7 +1,7 @@
 import Student from '../model/student.model.js';
 
 export const deleteAllStudentsController = async (req, res) => {
-    console.log("Im Here!!!!");
+    
     try {
         await Student.deleteMany({});
         

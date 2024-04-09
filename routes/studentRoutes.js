@@ -6,6 +6,6 @@ const router = express.Router();
 
 
 router.get('/:emailID', getStudentByRollNoController);
-router.delete('/deleteAllStudents' , deleteAllStudentsController);
+router.delete('/deleteStudents' , deleteAllStudentsController);
 
 export default router;
