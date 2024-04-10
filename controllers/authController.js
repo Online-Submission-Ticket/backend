@@ -59,7 +59,8 @@ export const resetPasswordController = async (req, res) => {
 export const loginController = async (req, res) => {
   try {
     const { emailID, password } = req.body;
-    
+    console.log(emailID);
+    console.log(password);
     // Validation
     if (!emailID || !password) {
       return res.status(400).send({
