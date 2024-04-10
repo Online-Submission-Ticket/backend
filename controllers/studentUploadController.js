@@ -4,11 +4,11 @@ import Student from '../model/student.model.js';
 
 export const uploadStudentsController = async (req, res) => {
     try {
-        const { file: studentFile } = req;
+        const { file: dataFile } = req;
 
-        console.log('Request file:', studentFile);
+        console.log('Request file:', dataFile);
 
-        if (!studentFile) {
+        if (!dataFile) {
             return res.status(400).send({
                 success: false,
                 message: 'File not found',
@@ -17,7 +17,7 @@ export const uploadStudentsController = async (req, res) => {
 
         const results = [];
 
-        const stream = Readable.from(studentFile.buffer.toString('utf-8'));
+        const stream = Readable.from(dataFile.buffer.toString('utf-8'));
 
         stream
             .pipe(csv())

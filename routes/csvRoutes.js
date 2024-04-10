@@ -20,8 +20,8 @@ const upload = multer({
 });
 
 // Route handler for file upload
-router.post('/upload-teachers', upload.single('teacherFile'), uploadTeachersController);
-router.post('/upload-students', upload.single('studentFile'), uploadStudentsController);
+router.post('/upload-teachers', upload.single('dataFile'), uploadTeachersController);
+router.post('/upload-students', upload.single('dataFile'), uploadStudentsController);
 
 
 
